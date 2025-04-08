@@ -1,4 +1,5 @@
 from pathlib import Path
+import pymongo
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -51,14 +52,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'octofit_tracker.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'octofit_db',
-        'HOST': 'localhost',
-        'PORT': 27017,
-    }
-}
+# MongoDB connection
+MONGO_CLIENT = pymongo.MongoClient('mongodb://localhost:27017/')
+MONGO_DB = MONGO_CLIENT['octofit_db']
 
 AUTH_PASSWORD_VALIDATORS = [
     {

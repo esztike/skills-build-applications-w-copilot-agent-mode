@@ -1,28 +1,29 @@
-from djongo import models
+# Remove djongo models and replace with plain Python classes or data structures
+# Models will now be handled directly via pymongo
 
-class User(models.Model):
-    _id = models.ObjectIdField()
-    username = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
+class User:
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
 
-class Team(models.Model):
-    _id = models.ObjectIdField()
-    name = models.CharField(max_length=100)
-    members = models.ArrayReferenceField(to=User, on_delete=models.CASCADE)
+class Team:
+    def __init__(self, name, members):
+        self.name = name
+        self.members = members
 
-class Activity(models.Model):
-    _id = models.ObjectIdField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    activity_type = models.CharField(max_length=100)
-    duration = models.DurationField()
+class Activity:
+    def __init__(self, user, activity_type, duration):
+        self.user = user
+        self.activity_type = activity_type
+        self.duration = duration
 
-class Leaderboard(models.Model):
-    _id = models.ObjectIdField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    score = models.IntegerField()
+class Leaderboard:
+    def __init__(self, user, score):
+        self.user = user
+        self.score = score
 
-class Workout(models.Model):
-    _id = models.ObjectIdField()
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+class Workout:
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description

@@ -1,36 +1,19 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from octofit_tracker.settings import MONGO_DB
 from rest_framework.response import Response
-from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, LeaderboardSerializer, WorkoutSerializer
-from .models import User, Team, Activity, Leaderboard, Workout
+from rest_framework.decorators import api_view
 
 @api_view(['GET'])
-def api_root(request, format=None):
-    base_url = 'http://localhost:8000/'
+def api_root(request):
     return Response({
-        'users': base_url + 'api/users/',
-        'teams': base_url + 'api/teams/',
-        'activities': base_url + 'api/activities/',
-        'leaderboard': base_url + 'api/leaderboard/',
-        'workouts': base_url + 'api/workouts/'
+        'users': '/api/users/',
+        'teams': '/api/teams/',
+        'activities': '/api/activities/',
+        'leaderboard': '/api/leaderboard/',
+        'workouts': '/api/workouts/'
     })
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class TeamViewSet(viewsets.ModelViewSet):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
-
-class ActivityViewSet(viewsets.ModelViewSet):
-    queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
-
-class LeaderboardViewSet(viewsets.ModelViewSet):
-    queryset = Leaderboard.objects.all()
-    serializer_class = LeaderboardSerializer
-
-class WorkoutViewSet(viewsets.ModelViewSet):
-    queryset = Workout.objects.all()
-    serializer_class = WorkoutSerializer
+# Example of a view using pymongo
+@api_view(['GET'])
+def get_users(request):
+    users = list(MONGO_DB['users'].find({}, {'_id': 0}))  # Exclude MongoDB's _id field
+    return Response(users)
